@@ -1,0 +1,28 @@
+{% extends 'base_generic.html' %}
+
+<style>
+.form-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+</style>
+
+{% block content %}
+<h2>Регистрация</h2>
+    {% if user.is_authenticated %}
+        <p>Выйдите из учетной записи чтобы зарегистрироваться</p>
+    {% else %}
+
+        <div class="form-content">
+        <form method="post">
+            {% csrf_token %}
+
+            {{  form.as_p }}
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        </div>
+
+    {% endif %}
+{% endblock %}
