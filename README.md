@@ -1,0 +1,1 @@
+# DjangoPraktikaTask2
