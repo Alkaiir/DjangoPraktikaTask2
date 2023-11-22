@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}<title>DesignPro</title>{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    .page-content {
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        gap: 20px;
+    }
+
+    .nav-bar {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 50px;
+        margin: 5px;
+    }
+
+    .main-content {
+        margin: 5px;
+        padding: 20px;
+    }
+
+    hr {
+        width: 100px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+<body>
+<div class="page-content">
+    <div class="nav-bar">
+        <div class="site-nav">
+            <p><a href="{% url 'index' %}">Главная</a></p>
+        </div>
+        <hr>
+        <div class="auth-nav">
+            {% if user.is_authenticated %}
+                <p>Пользователь: {{ user.get_username }}</p>
+                <p><a href="#">Личный кабинет</a></p>
+                <p><a href="{% url 'logout' %}">Выйти</a></p>
+            {% else %}
+                <p><a href="{% url 'login' %}?next={{ request.path }}">Авторизация</a></p>
+                <p><a href="{% url 'register' %}">Регистрация</a></p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>
