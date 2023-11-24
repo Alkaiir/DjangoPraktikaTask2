@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <table>
+    <h2>Удалить заявку : {{application.title}}</h2>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Удалить" />
+</form>
+{% endblock %}

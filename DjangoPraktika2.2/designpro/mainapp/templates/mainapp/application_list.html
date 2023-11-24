@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h2>Все заявки</h2>
+{% if application_list %}
+  <ul>
+
+  {% for application in application_list %}
+    <li>
+      <hr>
+      <a href="{{ application.get_absolute_url }}">{{ application }}</a>
+      {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+      <img style="width: 500px;" src="{{ application.image_url }}" alt="Планировка Изображения">
+      <hr>
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>Проекты отсутствуют</p>
+{% endif %}
+{% else %}
+  Вы не можете просмотреть все заявки
+{% endif %}
+
+{% endblock %}
+

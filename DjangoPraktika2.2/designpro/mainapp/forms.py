@@ -80,3 +80,14 @@ class RegisterUserForm(UserCreationForm):
             raise forms.ValidationError(validator.message)
 
         return patronymic
+
+
+class ApplicationsSort(forms.Form):
+    OPTIONS = [
+        ('option1', 'Все'),
+        ('option2', 'Новые'),
+        ('option3', 'В работе'),
+        ('option4', 'Выполненные')
+
+    ]
+    dropdown = forms.ChoiceField(label='Выберите тип заявки', choices=OPTIONS)

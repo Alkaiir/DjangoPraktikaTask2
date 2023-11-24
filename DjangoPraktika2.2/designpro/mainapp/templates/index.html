@@ -2,5 +2,22 @@
 
 {% block content %}
 <h1 class="main-content__title">Главная страница</h1>
-<p>Сейчас разрабатывается {{ in_work }}  проектов</p>
+<p>Сейчас разрабатывается проектов:  {{ in_work }}</p>
+
+{% for complete_app in complete %}
+    <hr style="margin-top:20px; width: 500px;">
+    <p>{{ complete_app.time }}</p>
+    <p>{{ complete_app.title }}</p>
+    {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+    <img style="width: 500px;" src="{{ complete_app.image_url }}" alt="Планировка Изображения">
+    <hr style="margin-top:20px; width: 500px;">
+{% endfor %}
+
 {% endblock %}
