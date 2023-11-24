@@ -1,0 +1,122 @@
+{% extends 'base_generic.html' %}
+
+
+
+{% block content %}
+<h2>Личный кабинет</h2>
+    {% if user.is_authenticated %}
+    <div style="margin-bottom: 20px; margin-top: 20px;">
+        <p>Пользователь: {{ user.username }}</p>
+        <p>Фамилия: {{ user.last_name }}</p>
+        <p>Имя: {{ user.first_name }}</p>
+        <p>Отчество: {{ user.patronymic }}</p>
+        <p>Почта: {{ user.email }}</p>
+    </div>
+    <h2>Ваши заявки</h2>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отсортировать</button>
+    </form>
+
+<!--    Все заявки-->
+    {% if form.cleaned_data.dropdown == 'option1' %}
+    {% if applications %}
+    {% for application in applications %}
+    <hr>
+      <p>{{ application.time }}</p>
+      <a href="{{ application.get_absolute_url }}">{{ application }}</a>
+      <p>{{ application.description }}</p>
+      <p>{{ application.category }}</p>
+      {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+      <img style="width: 500px;" src="{{ application.image_url }}" alt="Планировка Изображения">
+      <hr>
+    {% endfor %}
+    {% else %}
+    <p>У вас нет заявок</p>
+    {% endif %}
+<!--    Новые заявки-->
+    {% elif form.cleaned_data.dropdown == 'option2' %}
+    {% if new_applications %}
+    {% for application in new_applications %}
+    <hr>
+      <p>{{ application.time }}</p>
+      <a href="{{ application.get_absolute_url }}">{{ application }}</a>
+      <p>{{ application.description }}</p>
+      <p>{{ application.category }}</p>
+      {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+      <img style="width: 500px;" src="{{ application.image_url }}" alt="Планировка Изображения">
+      <hr>
+    {% endfor %}
+    {% else %}
+    <p>У вас нет заявок со статусом "Новая"</p>
+    {% endif %}
+<!--    Заявки в работе-->
+    {% elif form.cleaned_data.dropdown == 'option3' %}
+    {% if in_work_applications %}
+    {% for application in in_work_applications %}
+    <hr>
+      <p>{{ application.time }}</p>
+      <a href="{{ application.get_absolute_url }}">{{ application }}</a>
+      <p>{{ application.description }}</p>
+      <p>{{ application.category }}</p>
+      {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+      <img style="width: 500px;" src="{{ application.image_url }}" alt="Планировка Изображения">
+      <hr>
+    {% endfor %}
+    {% else %}
+    <p>У вас нет заявок со статусом "В работе"</p>
+    {% endif %}
+<!--    Выполненные заявки-->
+    {% elif form.cleaned_data.dropdown == 'option4' %}
+    {% if complete_applications %}
+    {% for application in complete_applications %}
+    <hr>
+      <p>{{ application.time }}</p>
+      <a href="{{ application.get_absolute_url }}">{{ application }}</a>
+      <p>{{ application.description }}</p>
+      <p>{{ application.category }}</p>
+      {% if application.status == 'i' %}
+      <p>В работе</p>
+
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+      {% endif %}
+      <img style="width: 500px;" src="{{ application.image_url }}" alt="Планировка Изображения">
+      <hr>
+    {% endfor %}
+    {% else %}
+    <p>У вас нет заявок со статусом "Выполнена"</p>
+    {% endif %}
+    {% endif %}
+
+
+
+    {% else %}
+       <p>Авторизируйтесь, чтобы просматривать личный кабинет</p>
+    {% endif %}
+{% endblock %}

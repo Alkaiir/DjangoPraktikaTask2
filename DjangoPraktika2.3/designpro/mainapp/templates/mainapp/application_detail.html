@@ -1,0 +1,38 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h3>Название: {{ application.title }}</h3>
+<p>Описание: {{ application.description }}</p>
+<p>Время создания заявки {{application.time}}</p>
+<p>Категория: {{ application.category }}</p>
+<p>Заказчик: {{ application.customer }}</p>
+{% if application.status == 'i' %}
+      <p>В работе</p>
+      {% elif application.status == 'n' %}
+      <p>Новая | <a href="{% url 'application-delete' application.pk %}">Удалить</a>{% if user.is_staff %}<a href="#"> | Изменить статус на "Выполнена"</a><a href="#"> | Изменить статус на "В работе"</a>{% endif %}</p>
+      {% else %}
+      <p>Выполнена</p>
+{% endif %}
+<img style="margin-top: 50px;" src="{{ application.image_url}}" alt="Планировка Изображения">
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if perms.catalog.change_book or perms.catalog.delete_book %}
+  <hr>
+  <ul class="sidebar-nav">
+    {% if perms.catalog.change_book %}
+      <li><a href="{% url 'book-update' book.id %}">Update Book</a></li>
+    {% endif %}
+    {% if not book.bookinstance_set.all and perms.catalog.delete_book %}
+      <li><a href="{% url 'book-delete' book.id %}">Delete Book</a></li>
+    {% endif %}
+    </ul>
+  {% endif %}
+
+{% endblock %}
