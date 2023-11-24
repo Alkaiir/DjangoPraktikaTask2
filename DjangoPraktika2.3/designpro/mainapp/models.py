@@ -6,7 +6,7 @@ from django.urls import reverse
 
 
 class Category (models.Model):
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, unique=True, verbose_name='Название категории')
 
     def __str__(self):
         return self.name
@@ -49,9 +49,9 @@ class Application (models.Model):
                               message='Allowed types: bmp, jpeg, jpg. png')],
                               verbose_name='План помещения')
 
-    comment = models.TextField(max_length=1000, verbose_name='Комментарий', blank=True)
+    comment = models.TextField(max_length=1000, verbose_name='Комментарий', blank=False)
 
-    complete_image = models.ImageField(blank=True, upload_to='img/',
+    complete_image = models.ImageField(blank=False, upload_to='img/',
                               validators=[validate_image_file_extension,
                                           FileExtensionValidator(['bmp', 'jpeg', 'jpg', 'png'],
                                                                  message='Allowed types: bmp, jpeg, jpg. png')],

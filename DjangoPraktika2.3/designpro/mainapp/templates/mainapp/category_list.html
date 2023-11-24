@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if user.is_staff %}
+<h2>Все Категории</h2>
+{% if category_list %}
+  <ul>
+
+  {% for category in category_list %}
+    <li>
+      <hr>
+      <p>{{ category }} | <a href="{% url 'category-delete' pk=category.id%}">Удалить категорию</a></p>
+      <hr>
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>Категории отсутствуют</p>
+{% endif %}
+{% else %}
+  Вы не можете просмотреть все категории
+{% endif %}
+
+{% endblock %}
+

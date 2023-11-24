@@ -6,6 +6,7 @@
 
 {% for complete_app in complete %}
     <hr style="margin-top:20px; width: 500px;">
+    <p><a href="{{ complete_app.get_absolute_url }}">{{ complete_app }}</a></p>
     <p>{{ complete_app.time }}</p>
     <p>{{ complete_app.title }}</p>
     {% if application.status == 'i' %}

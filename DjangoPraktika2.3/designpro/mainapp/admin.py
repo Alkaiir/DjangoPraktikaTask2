@@ -12,5 +12,4 @@ admin.site.register(CustomUser)
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('title',
-                    'category', 'customer', 'status')
-    fields = ['title', 'category', 'customer', 'status']
+                    'category', 'customer', 'status', 'image', 'comment','complete_image')

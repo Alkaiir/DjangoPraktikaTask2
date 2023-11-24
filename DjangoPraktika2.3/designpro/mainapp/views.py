@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View, generic
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from .models import Category, Application
 from .forms import *
@@ -50,9 +50,7 @@ def profile(request):
 
 
 class ApplicationListView(generic.ListView):
-
     model = Application
-    paginate_by = 10
 
 
 class ApplicationDetailView(generic.DetailView):
@@ -95,3 +93,44 @@ class ApplicationDelete(DeleteView):
     success_url = '../../profile'
     template_name = 'mainapp/application_form_delete.html'
 
+
+class ApplicationChangeToInWork(UpdateView):
+    model = Application
+    fields = ['comment']
+    template_name = 'mainapp/application_form_change_in_work.html'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.status = 'i'
+        instance.save()
+
+        return redirect('profile')
+
+
+class ApplicationChangeToComplete(UpdateView):
+    model = Application
+    fields = ['complete_image']
+    template_name = 'mainapp/application_form_change_complete.html'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.status = 'c'
+        instance.save()
+
+        return redirect('profile')
+
+
+class CategoryListView(generic.ListView):
+    model = Category
+
+
+class CategoryCreate(CreateView):
+    model = Category
+    fields = ['name']
+    success_url = reverse_lazy('category-list')
+
+
+class CategoryDelete(DeleteView):
+    model = Category
+    success_url = reverse_lazy('category-list')
+    template_name = 'mainapp/category_form_delete.html'
